@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/utsavgarg/tensorflow-classification.git
+	branch = master
+	commit = ea2ca5fbe01bd6dcba709cd1a1af4dd0bbefb0ff
+	parent = 113203ef49f42717ccc875a736eef205f44ccf66
+	cmdver = 0.3.1
