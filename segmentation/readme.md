@@ -1,3 +1,6 @@
+
+![Segmentation example](seg_example.png)
+
 # GD-UAP for Segmentation
 
 Code for the paper [Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations]()
@@ -71,10 +74,6 @@ These are some results taken from the paper:
 |DL-VGG      | 62.10 | 61.13    |36.91 |35.41 |44.90 |27.41 |43.96|
 |VGGDL_RN101 | 74.94 | 73.42    |56.40 |58.66 |37.45 |39.00 |73.01|
 
-
-### Qualitative Results
-
-![Segmentation example](seg_example.png)
 
 
 ## Acknowledgement
