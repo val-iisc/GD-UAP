@@ -26,7 +26,7 @@ For training and evaluation, the following steps must be followed:
 
 5) Kindly look into [seg_metrics_pytorch](https://github.com/BardOfCodes/seg_metrics_pytorch) for details regarding the metric evaluation scripts.
 
-5) ** For only evaluation: ** Follow steps 1,2,4 and 5. Download and save the precomputed perturbations from this [link](https://www.dropbox.com/s/ixjzg4itx10nhid/perturbations.tar.gz?dl=0), and save the segmentation perturbations in the `perturbations/` folder.
+5) ** For only evaluation: ** Follow steps 1,2,4 and 5. Download and save the precomputed perturbations from this [link](https://www.dropbox.com/s/ixjzg4itx10nhid/perturbations.tar.gz?dl=0), and save the classification perturbations in the `perturbations/` folder.
 
 ### 2) Training
 
