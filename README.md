@@ -1,2 +1,2 @@
-# G-UAP
+# GD-UAP
 Generalization Universal Adversarial Perturbations
