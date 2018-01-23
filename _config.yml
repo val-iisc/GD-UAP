@@ -1,15 +1,13 @@
 
 # SEO settings
-title: Simplest
-description: "A free Jekyll theme for download"
-keywords: "Jekyll, theme, free, download, SEO, blog, web"
+title: GD-UAP
+description: "Project Page for Generalizable Data-free Universal Adversarial Perturbation."
+keywords: "Deep learning, UAP, adversarial perturbations"
 url: http://val-iisc.github.io
 baseurl: "/GD-UAP/"
 # baseurl: null
 
-google_analytics: UA-52446115-1
-repo: http://github.com/nandomoreirame/simplest
-disqus_shortname: "nandothemes"
+repo: https://github.com/val-iisc/GD-UAP
 
 # Build settings
 permalink   : /:year/:title/
@@ -30,16 +28,16 @@ sass:
 
 # Author settings
 author:
-  name     : Fernando Moreira
-  job      : Frontend Engineer
+  name     : Aditya Ganeshan
+  job      : Project Assistant
   bio      : "Enthusiast performance, responsive design and usability, always looking for the best project and good coffee."
   thumb    : /images/author.jpg
-  email    : nandomoreira.me@gmail.com
-  url      : http://nandomoreira.me
-  github   : http://github.com/nandomoreirame
-  twitter  : http://twitter.com/nandomoreirame
-  facebook : http://facebook.com/fernando.dev
-  linkedin : http://linkedin.com/in/nandomoreirame
+  email    : adityaganeshan@gmail.com
+  url      : http://bardofcodes.github.io
+  github   : http://github.com/bardofcodes
+  twitter  : http://twitter.com/SoRapterPhilo
+  facebook : http://facebook.com/adityaganeshan
+  linkedin : https://www.linkedin.com/in/aditya-ganeshan-68341bb9/
 
 # social settings
 og_locale: "pt_BR"
