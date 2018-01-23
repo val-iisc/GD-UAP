@@ -1,3 +1,6 @@
+
+![Classification example](classification_example.png)
+
 # GD-UAP for Classification
 
 Code for the paper [Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations]()
@@ -59,10 +62,6 @@ These are some results taken from the paper:
 |VGG-16       | 8.62 | 45.47    | 63.08       | 77.77   | 47.10  | **77.8**   |
 |VGG-19       | 8.40 | 40.68    | 64.67       | 75.51   | 43.62  | **80.8**   |
 |Resnet-152   | 8.99 | 29.78    | 37.3        | 66.68   |  - | **84.0**   | 
-
-### Qualitative Results
-
-![Classification example](classification_example.png)
 
 ## Acknowledgement
 
