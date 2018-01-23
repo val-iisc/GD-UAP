@@ -1,3 +1,6 @@
+
+![depth example](depth_example.png)
+
 # GD-UAP for Depth Estimation
 
 Code for the paper [Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations]()
@@ -71,10 +74,6 @@ These are some results taken from the paper:
 ### Quantitative Results
 
 T.B.A.
-
-### Qualitative Results
-
-![depth example](depth_example.png)
 
 
 ## Acknowledgement
