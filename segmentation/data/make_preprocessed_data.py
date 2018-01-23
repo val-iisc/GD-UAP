@@ -1,5 +1,5 @@
 '''
-This script is for making the substitute dataset from 1000 PASCAL 2012 JPEGImages.
+This script is for making the substitute dataset from 1000 Imagenet Images.
 Preprocessed form of these images are saved for faster evaluation.
 '''
 import sys
@@ -19,7 +19,7 @@ def validate_arguments(args):
         exit(-1)
     
 
-def save_preprocessed(net, save_loc, im_list, im_loc):
+def save_preprocessed(net, save_loc, im_loc, im_list):
     
     save_name_MAP ={
                 'fcn_alexnet' : 'fcn_preprocessed.npy',
@@ -35,15 +35,17 @@ def save_preprocessed(net, save_loc, im_list, im_loc):
         exit(-1)
     else:
         img_list = open(im_list).readlines()
-        size = 224
-        if net == 'caffenet': size = 227    
+        size = 513
         
         preprocessed_im = np.zeros((1000,3,size,size))
         
         for i in range(1000):
-            im_path = os.path.normpath(im_loc+img_list[i].strip())
-            im = img_loader(im_path,net)
-            im = randomize(img)
+            im_path = op.path.join(im_loc,img_list[i].strip())
+            img_temp = img_loader(im_path,net)
+            im_temp = randomize(img_temp)
+            # To avoid to much padding
+            ratio = 2
+            img_temp = cv2.resize(img_temp,(int(img_temp.shape[1]*ratio),int(img_temp.shape[0]*ratio))).astype(float)
             img_temp = img_temp.astype('float')
             img_temp[:,:,0] = img_temp[:,:,0] - 104.008
             img_temp[:,:,1] = img_temp[:,:,1] - 116.669
@@ -57,12 +59,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--network',default='all',help="Mention network for which preprocessed data is requried")
     parser.add_argument('--save_loc',default='./',help='location for saving the preprocessed npy.')
-    parser.add_argument('--places_im_list',default='../utils/places205_val.txt',help='file containing names of image-files')
-    parser.add_argument('--places_im_loc',help='location for the Places 205 folder')
+    parser.add_argument('--ilsvrc_im_list',default='../utils/ilsvrc_val_list.txt',help='file containing names of image-files')
+    parser.add_argument('--ilsvrc_im_loc',help='location of the validation files.')
     args = parser.parse_args()
     
     validate_arguments(args)
-    save_preprocessed(args.network, args.save_loc,args.places_im_list,args.places_im_loc)
+    save_preprocessed(args.network, args.save_loc,args.ilsvrc_im_loc,args.ilsvrc_im_list)
 
 if __name__ == '__main__':
     main()
