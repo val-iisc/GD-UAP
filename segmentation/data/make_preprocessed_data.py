@@ -19,7 +19,7 @@ def validate_arguments(args):
         exit(-1)
     
 
-def save_preprocessed(net, save_loc, im_loc, im_list):
+def save_preprocessed(net, save_loc, im_list):
     
     save_name_MAP ={
                 'fcn_alexnet' : 'fcn_preprocessed.npy',
@@ -40,7 +40,7 @@ def save_preprocessed(net, save_loc, im_loc, im_list):
         preprocessed_im = np.zeros((1000,3,size,size))
         
         for i in range(1000):
-            im_path = op.path.join(im_loc,img_list[i].strip())
+            im_path = img_list[i].strip()
             img_temp = img_loader(im_path,net)
             im_temp = randomize(img_temp)
             # To avoid to much padding
@@ -59,12 +59,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--network',default='all',help="Mention network for which preprocessed data is requried")
     parser.add_argument('--save_loc',default='./',help='location for saving the preprocessed npy.')
-    parser.add_argument('--ilsvrc_im_list',default='../utils/ilsvrc_val_list.txt',help='file containing names of image-files')
-    parser.add_argument('--ilsvrc_im_loc',help='location of the validation files.')
+    parser.add_argument('--ilsvrc_im_list',default='../utils/ilsvrc_val.txt',help='file containing names of image-files')
     args = parser.parse_args()
     
     validate_arguments(args)
-    save_preprocessed(args.network, args.save_loc,args.ilsvrc_im_loc,args.ilsvrc_im_list)
+    save_preprocessed(args.network, args.save_loc,args.ilsvrc_im_list)
 
 if __name__ == '__main__':
     main()
