@@ -182,7 +182,7 @@ net_name,train_type,rescale_type,check_val,lamb_val,img_list_file=None,restore_f
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--train_type', default='googlenet', help='The network eg. googlenet')
+    parser.add_argument('--prior_type', default='googlenet', help='The network eg. googlenet')
     parser.add_argument('--img_list', default='None', help='The network eg. googlenet')
     parser.add_argument('--checkpoint_file', default='None', help='The network eg. googlenet')
     parser.add_argument('--batch_size', default='None', help='The network eg. googlenet')
