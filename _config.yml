@@ -1,58 +1,29 @@
+baseurl: "/GD-UAP" # The subpath of your site. Use "" if you're hosting a blog at the root level.
+url: "http://val-iisc.github.io" # the base hostname & protocol for your site
+title: "GD-UAP"
 
-# SEO settings
-title: GD-UAP
-description: "Project Page for Generalizable Data-free Universal Adversarial Perturbation."
-keywords: "Deep learning, UAP, adversarial perturbations"
-url: http://val-iisc.github.io
-baseurl: "/GD-UAP/"
-# baseurl: null
-
-repo: https://github.com/val-iisc/GD-UAP
-
-# Build settings
-permalink   : /:year/:title/
-markdown    : kramdown
-highlighter : pygments
-
-paginate: 4
-paginate_path: "/page/:num/"
-comments: true
-
-source: source
-destination: _site
-
-# Sass configuration
-sass:
-  sass_dir: assets/scss
-  style: compressed # expanded
-
-# Author settings
-author:
-  name     : Aditya Ganeshan
-  job      : Project Assistant
-  bio      : "Enthusiast performance, responsive design and usability, always looking for the best project and good coffee."
-  thumb    : /images/author.jpg
-  email    : adityaganeshan@gmail.com
-  url      : http://bardofcodes.github.io
-  github   : http://github.com/bardofcodes
-  twitter  : http://twitter.com/SoRapterPhilo
-  facebook : http://facebook.com/adityaganeshan
-  linkedin : https://www.linkedin.com/in/aditya-ganeshan-68341bb9/
-
-# social settings
-og_locale: "pt_BR"
-twitter_card: "summary_large_image"
-twitter_site: "@nandomoreirame"
+# This is used by feed.xml. Uncomment if you want to use it.
+# description: "..."
 
 gems:
-  - bourbon
-  - jekyll-paginate
-
-# navbar pages
-navbar:
-  - slug : about
-    title: About
-  - slug : blog
-    title: Blog
-
-exclude: ["gulp", "node_modules", "bower", "bower_components", "config.rb", "src", "Gemfile", "Gemfile.lock", ".rvmrc", ".rbenv-version", "package.json", "gulpfile.js", "README.md", "Rakefile", "changelog.md"]
+  - jemoji
+exclude:
+  - "README.md"
+  - "CHANGELOG.md"
+  - "CNAME"
+  - "Gemfile"
+  - "Gemfile.lock"
+permalink: :title
+defaults:
+  -
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
