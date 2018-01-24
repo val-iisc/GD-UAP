@@ -1,9 +1,57 @@
 ---
 ---
 
-{% for post in site.posts limit:site.data.theme.num_home_posts %}
 <div class="post-header-home">
   <h1 class="post-title-home">
+Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations
+  </h1>
+  <div data-purplecoat="shiori" data-purplecoat-label="post-header-home.html">
+    <center><h2><p class="text-muted">Konda Reddy Mopuri*, Aditya Ganeshan*, R. Venkatesh Babu (* = equal contribution)</p></h2></center>
+      <center><h3><p class="text-muted">Video Analytics Lab, CDS</p></h3></center>
+        <center><h3><p class="text-muted">Indian Institute of Science, Bangalore</p></h3></center>
+  </div>
+
+</div>
+<div class="post-content">
+  <div class="well well-sm">
+    T. B. A. a small Web GL algorithm representation.
+  </div>
+    <h1 >
+      Abstract
+  </h1>
+  <p>Machine learning models are susceptible to adversarial perturbations: small changes to input that can cause large changes
+in output. It is also demonstrated that there exist input-agnostic perturbations, called universal adversarial perturbations, which can
+change the inference of target model on most of the data samples. However, existing methods to craft universal perturbations are (i)
+task specific, (ii) require samples from the training data distribution, and (iii) perform complex optimizations. Also, because of the data
+dependence, fooling ability of the crafted perturbations is proportional to the available training data. In this paper, we present a novel,
+generalizable and data-free objective for crafting universal adversarial perturbations. Independent of the underlying task, our objective
+achieves fooling via corrupting the extracted features at multiple layers. Therefore, the proposed objective is generalizable to craft
+image-agnostic perturbations across multiple vision tasks such as object recognition, semantic segmentation and depth estimation.
+In the practical setting of black-box attacking scenario, we show that our objective outperforms the data dependent objectives to fool
+the learned models. Further, via exploiting simple priors related to the data distribution, our objective remarkably boosts the fooling
+ability of the crafted perturbations. Significant fooling rates achieved by our objective emphasize that the current deep learning models
+are now at an increased risk, since our objective generalizes across multiple tasks without the requirement of training data for crafting
+the perturbations. To encourage reproducible research, we have released the code for our proposed algorithm at [GitHub](https://github.com/val-iisc/GD-UAP)
+  </p>
+  <h1> Paper </h1>
+  <p>
+    T. B. A.
+  </p>
+  <h1> BibTex </h1>
+  <p>
+    ```
+    T. B. A.
+    ```
+  </p>
+  <h1> Code Provided at [GitHub](https://github.com/val-iisc/GD-UAP)</h1>
+  <h1>  Acknowledgement </h1>
+  <p>
+    T. B. A.
+  </p>
+
+</div>
+
+<div class="post-header-home">
     <a href="{{ post.url | prepend:site.baseurl }}">{{ post.title }}</a>
   </h1>
   {% include post-header-home.html %}
@@ -12,8 +60,4 @@
   {{ post.excerpt }}
   <p class="text-right"><a href="{{ post.url | prepend:site.baseurl }}">Continue Reading &rarr;</a></p>
 </div>
-{% endfor %}
 <hr>
-<div class="home-read-more">
-  <a href="{{ "/archive" | prepend:site.baseurl }}" class="btn btn-primary btn-block btn-lg">View All {{ site.posts | size }} Articles →</a>
-</div>

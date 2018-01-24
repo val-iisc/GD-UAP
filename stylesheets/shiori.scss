@@ -5,10 +5,10 @@ $container-large-desktop: 970px;
 
 $font-family-base: "Merriweather", "Helvetica Neue", Arial, sans-serif;
 $headings-font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
-$headings-font-weight: 700;
+$headings-font-weight: 500;
 
 $font-size-base: 15px;
-$font-size-h1: floor(($font-size-base * 2));
+$font-size-h1: floor(($font-size-base * 2.5));
 $font-size-h2: floor(($font-size-base * 1.4));
 $font-size-h3: floor(($font-size-base * 1));
 $font-size-h4: floor(($font-size-base * 1));
