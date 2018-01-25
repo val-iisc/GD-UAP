@@ -110,7 +110,7 @@ def train(model,size,net_name,train_batch_size,val_batch_size,prior_type,img_lis
     sat_change = 0
     sat_min=0.5
     if prior_type == 'with_data':
-        img_list = open(img_list_file).readlines()
+        img_list = open(img_list).readlines()
         num_images = len(img_list)
     else:
         img_list = None
@@ -129,7 +129,7 @@ def train(model,size,net_name,train_batch_size,val_batch_size,prior_type,img_lis
         elif prior_type == 'with_range':
             img = 'data/gaussian_noise.png'
             img_list = [img,]*train_batch_size
-            images = get_data_from_chunk_v2_noise(img_list,'',size)
+            images = get_training_data(img_list,'',size,net_name)
             inp = images+torch.stack((v[0],)*(train_batch_size),0)
             out = model(inp)
         elif prior_type =='no_data':

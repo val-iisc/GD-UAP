@@ -47,7 +47,7 @@ def blur(img_temp,blur_p):
     else:
         return img_temp
 
-def crop_preprocess(img_temp,dim,net_name):
+def crop_train(img_temp,dim,net_name):
     h =img_temp.shape[0]
     w = img_temp.shape[1]
     trig_h=trig_w=False
@@ -68,7 +68,7 @@ def crop_preprocess(img_temp,dim,net_name):
     else:
         return img_temp
 
-def crop(img_temp,dim,net_name):
+def crop_test(img_temp,dim,net_name):
     if net_name in ['dl_resnet_msc','dl_vgg16']:
         h =img_temp.shape[0]
         w = img_temp.shape[1]
@@ -109,7 +109,7 @@ def rotate(img_temp,rot,rot_p):
     else:
         return img_temp
 
-def randomize(img_temp,dim=513):
+def randomizer(img_temp,dim=513):
     flip_p = random.uniform(0, 1)
     rot_p = random.choice([-10,-7,-5,3,0,3,5,7,10])
     scale_p = random.uniform(0, 1)
@@ -148,12 +148,12 @@ def get_training_data(chunk,img_path,dim,net_name,randomize=True):
         img_name = piece.split(' ')[0].strip()
         img_temp = img_loader(img_path+img_name,net_name)
         if randomize:
-            img_temp = randomize(img_temp)
+            img_temp = randomizer(img_temp)
             
         img_temp[:,:,0] = img_temp[:,:,0] - 104.008
         img_temp[:,:,1] = img_temp[:,:,1] - 116.669
         img_temp[:,:,2] = img_temp[:,:,2] - 122.675
-        img_temp = crop(img_temp,dim,net_name)
+        img_temp = crop_train(img_temp,dim,net_name)
         images[:,:,:,i] = img_temp
         
     images = images.transpose((3,2,0,1))
@@ -168,7 +168,7 @@ def get_testing_data(chunk,im_path,net_name,dim=[513,513]):
         img_temp[:,:,0] = img_temp[:,:,0] - 104.008
         img_temp[:,:,1] = img_temp[:,:,1] - 116.669
         img_temp[:,:,2] = img_temp[:,:,2] - 122.675
-        img_temp = crop(img_temp,dim,net_name)
+        img_temp = crop_test(img_temp,dim,net_name)
         images[:,:,:,i] = img_temp
         
     images = images.transpose((3,2,0,1))

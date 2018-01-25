@@ -43,7 +43,7 @@ def save_preprocessed(net, save_loc, im_list):
         for i in range(1000):
             im_path = img_list[i].strip()
             img_temp = img_loader(im_path,net)
-            im_temp = randomize(img_temp)
+            im_temp = randomizer(img_temp)
             # To avoid to much padding
             ratio = 2
             img_temp = cv2.resize(img_temp,(int(img_temp.shape[1]*ratio),int(img_temp.shape[0]*ratio))).astype(float)
@@ -51,7 +51,7 @@ def save_preprocessed(net, save_loc, im_list):
             img_temp[:,:,0] = img_temp[:,:,0] - 104.008
             img_temp[:,:,1] = img_temp[:,:,1] - 116.669
             img_temp[:,:,2] = img_temp[:,:,2] - 122.675
-            img_temp = crop_preprocess(img_temp,size,net)
+            img_temp = crop_train(img_temp,size,net)
             img_temp = img_temp.transpose((2,0,1))
             preprocessed_im[i] = np.copy(img_temp)
             if i%100 == 0 : print('Current Iteration: ',i)
