@@ -160,8 +160,8 @@ def get_training_data(chunk,img_path,dim,net_name,randomize=True):
     images = Variable(torch.from_numpy(images).float()).cuda()
     return images
 
-def get_testing_data(chunk,im_path,net_name,dim=513):
-    images = np.zeros((dim,dim,3,len(chunk)))
+def get_testing_data(chunk,im_path,net_name,dim=[513,513]):
+    images = np.zeros((dim[0],dim[1],3,len(chunk)))
     for i,piece in enumerate(chunk):
         img_temp = img_loader(im_path+piece+'.jpg',net_name)
         img_temp = img_temp.astype('float')

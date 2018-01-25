@@ -61,7 +61,10 @@ def evaluate(model,size,net_name,im_path,im_list,save_path,adv_im):
         # image[image ==255] = 0
         height = image.shape[0]
         width = image.shape[1]
-        images = get_testing_data(chunk,im_path,net_name)
+        if net_name in ['dl_resnet_msc','dl_vgg16']:
+            images = get_testing_data(chunk,im_path,net_name)
+        else:
+            images = get_testing_data(chunk,im_path,net_name,[height,width])
         normal_out = model(images)
         normal_out = normal_out.cpu().data.numpy()[0]
         normal_out = np.argmax(normal_out,0)[:height,:width]

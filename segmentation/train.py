@@ -71,7 +71,7 @@ def get_layers_to_opt(model_name,model):
                 
     return layers_to_opt
 
-def train(net,size,net_name,train_batch_size,val_batch_size,train_type,img_list,img_path):
+def train(model,size,net_name,train_batch_size,val_batch_size,prior_type,img_list,img_path):
     
     init_v = input_init()
     v = torch.autograd.Variable(init_v.cuda(),requires_grad=True)
@@ -88,10 +88,11 @@ def train(net,size,net_name,train_batch_size,val_batch_size,train_type,img_list,
     
     # getting the validation set
     if (net_name in  ['fcn8s_vgg16','fcn_alexnet']):
-        data_path =os.path.join('data','fcn_preprocessed.pth')
+        data_path =os.path.join('data','fcn_preprocessed.npy')
     elif net_name in ['dl_vgg16','dl_resnet_msc']:
         data_path = os.path.join('data','dl_preprocessed.npy')
-    imgs = torch.load(data_path)
+    imgs = np.load(data_path)
+    imgs = torch.FloatTensor(imgs)
     
     print('Loaded mini Validation Set')
     ## constants
@@ -108,7 +109,7 @@ def train(net,size,net_name,train_batch_size,val_batch_size,train_type,img_list,
     sat = 0
     sat_change = 0
     sat_min=0.5
-    if train_type == 'with_data':
+    if prior_type == 'with_data':
         img_list = open(img_list_file).readlines()
         num_images = len(img_list)
     else:
@@ -120,18 +121,18 @@ def train(net,size,net_name,train_batch_size,val_batch_size,train_type,img_list,
         optimer.zero_grad()
         
         # for big batch case
-        if train_type == 'with_data':
+        if prior_type == 'with_data':
             rander = np.random.randint(low=0,high=(imgs.size()[0]-train_batch_size))
             images = get_training_data(img_list[rander:rander+train_batch_size],img_path,size,net_name)
             inp = images+torch.stack((v[0],)*(train_batch_size),0)
             out = model(inp)
-        elif train_type == 'with_noise':
-            img = 'misc/gaussian_noise.png'
+        elif prior_type == 'with_range':
+            img = 'data/gaussian_noise.png'
             img_list = [img,]*train_batch_size
             images = get_data_from_chunk_v2_noise(img_list,'',size)
             inp = images+torch.stack((v[0],)*(train_batch_size),0)
             out = model(inp)
-        elif train_type =='no_data':
+        elif prior_type =='no_data':
             out = model(v)
 
         # Update_operation
@@ -166,8 +167,8 @@ def train(net,size,net_name,train_batch_size,val_batch_size,train_type,img_list,
 
             cur_batch = torch.autograd.Variable(torch.zeros(val_batch_size,3,513,513)).cuda()
             for j in range(iters):
-                l = j*batch_size
-                L = min((j+1)*batch_size,999)
+                l = j*val_batch_size
+                L = min((j+1)*val_batch_size,999)
                 cur = imgs[l:L,:,:size,:size]
                 cur_batch.data = cur.cuda()
                 out_normal = model.forward(cur_batch)#[3]
@@ -178,7 +179,7 @@ def train(net,size,net_name,train_batch_size,val_batch_size,train_type,img_list,
                 _,true_predictions = torch.max(out_normal,1)#.cpu().data.numpy()
                 _,ad_predictions = torch.max(out_pert,1)#.cpu().data.numpy()
                 not_flip = torch.sum(torch.eq(true_predictions,ad_predictions).float()).cpu().data.numpy()
-                temp += (batch_size*size*size - not_flip)/float(batch_size*size*size)
+                temp += (val_batch_size*size*size - not_flip)/float(val_batch_size*size*size)
             current_rate = temp/float(iters)
             print('current_per_pixel_flipping_rate', current_rate,'current_iter',i)
             if current_rate>fool_rate:
@@ -186,11 +187,11 @@ def train(net,size,net_name,train_batch_size,val_batch_size,train_type,img_list,
                 stopping =0
                 fool_rate = current_rate
                 im = v.cpu().data.numpy()
-                name = os.path.join('final_pert',net_name+'_'+train_type+'.npy')
+                name = os.path.join('perturbations','new_'+net_name+'_'+prior_type+'.npy')
                 np.save(name,im)
             elif current_rate ==fool_rate:
                 im = v.cpu().data.numpy()
-                name = os.path.join('final_pert',net_name+'_'+train_type+'.npy')
+                name = os.path.join('perturbations','new_'+net_name+'_'+prior_type+'.npy')
                 np.save(name,im)
             else:
                 stopping+=1
@@ -218,19 +219,19 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--network', default='dl_vgg16', help='The network eg. Deeplab Large FOV VGG16')
     parser.add_argument('--prior_type', default='no_data', help='Which kind of prior to use')
-    parser.add_argument('--img_list', default='None', help='In case of providing data priors,list of image-files')
     parser.add_argument('--train_batch_size', default=1, help='The batch size to use for training.')
     parser.add_argument('--val_batch_size', default=10, help='The batch size to use for validation.')
     parser.add_argument('--im_path',help='The location of the training images.')
+    parser.add_argument('--im_list', default='None', help='In case of providing data priors,list of image-files')
     parser.add_argument('--gpu', default='0', help='The ID of GPU to use.')
     args = parser.parse_args()
     torch.cuda.set_device(int(args.gpu))
-    if args.img_list == 'None':
-        args.img_list = None
+    if args.im_list == 'None':
+        args.im_list = None
     #args.network = 'vgg16'
     validate_arguments(args)
     net,size  = choose_net(args.network)
     train(net,size,args.network,args.train_batch_size,args.val_batch_size,
-         args.train_type,args.img_list,args.img_path)
+         args.prior_type,args.im_list,args.im_path)
 if __name__ == '__main__':
     main()
