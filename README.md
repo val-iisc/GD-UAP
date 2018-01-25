@@ -22,7 +22,14 @@ Perturbations crafted using the proposed algorithm are provided in this [link](h
 
 ## Reference
 
-T.B.A.
-
+```
+@article{gduap-mopuri-2018,
+title={Generalizable Data-free Objective for Crafting Universal Adversarial
+  Perturbations},
+author={Mopuri, Konda Reddy and Ganeshan, Aditya and Babu, R Venkatesh},
+booktitle = {arXiv preprint arXiv: 1801.08092 },
+year = {2018}
+}
+```
 #### Drop a mail [here](mailto:adityaganeshan@gmail.com) in case of any queries!
 
