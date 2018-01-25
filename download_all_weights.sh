@@ -1,3 +1,5 @@
+# For classification
+
 #download weights for vgg-f
 wget https://www.dropbox.com/s/b96tfz2hnthfegm/vgg_f.npy
 
@@ -18,3 +20,15 @@ wget https://www.dropbox.com/s/o8ay4gjdnu1ktds/resnet50.npy
 
 #download weights for resnet-152
 wget https://www.dropbox.com/s/8bzt5bfvkmz8xr9/resnet152.npy
+
+mv *.npy classification/weights/
+
+# For segmentation
+wget https://www.dropbox.com/s/hjmdi9k3skyjfjb/additional_weights.tar.gz?dl=0 -O additional_weights.tar.gz
+tar -xzf additional_weights.tar.gz
+rm additional_weights.tar.gz
+mv additional_weights/* segmentation/weights/
+rm -rf additional_weights
+
+# For depth estimation:
+

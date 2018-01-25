@@ -67,7 +67,7 @@ class deeplab_vgg_lfov(nn.Module):
         x = self.relu5_1(self.conv5_1(x))
         x = self.relu5_2(self.conv5_2(x))
         x = self.pool5a(self.pool5(self.relu5_3(self.conv5_3(x))))
-        x = self.reelu6(self.fc6(x))
+        x = self.relu6(self.fc6(x))
         x = self.reelu7(self.fc7(x))
         x = self.fc8_voc12(x)
         x = self.log_softmax(x)
