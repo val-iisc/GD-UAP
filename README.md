@@ -1,8 +1,10 @@
 # GD-UAP
 
-Code for the paper [Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations]()
+Code for the paper [Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations](https://arxiv.org/abs/1801.08092)
 
-Mopuri Konda Reddy,Aditya Ganeshan, R. Venkatesh Babu 
+Mopuri Konda Reddy*,Aditya Ganeshan*, R. Venkatesh Babu
+
+###### * = equal contribution 
 
 This repository contains code to craft and evaluate GD-UAP on the following task:
 
@@ -20,7 +22,14 @@ Perturbations crafted using the proposed algorithm are provided in this [link](h
 
 ## Reference
 
-T.B.A.
-
+```
+@article{gduap-mopuri-2018,
+title={Generalizable Data-free Objective for Crafting Universal Adversarial
+  Perturbations},
+author={Mopuri, Konda Reddy and Ganeshan, Aditya and Babu, R Venkatesh},
+booktitle = {arXiv preprint arXiv: 1801.08092 },
+year = {2018}
+}
+```
 #### Drop a mail [here](mailto:adityaganeshan@gmail.com) in case of any queries!
 

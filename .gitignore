@@ -25,6 +25,7 @@ wheels/
 *.egg
 MANIFEST
 # the npy files in data folder and wegihts
+*~
 *.swp
 */data/*.npy
 */data/*.png
