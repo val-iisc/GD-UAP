@@ -3,9 +3,11 @@
 
 # GD-UAP for Segmentation
 
-Code for the paper [Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations]()
+Code for the paper [Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations](https://arxiv.org/abs/1801.08092)
 
-Mopuri Konda Reddy,Aditya Ganeshan, R. Venkatesh Babu 
+Mopuri Konda Reddy*,Aditya Ganeshan*, R. Venkatesh Babu
+
+###### * = equal contribution  
 
 This section contains code to craft and evaluate GD-UAP on the task of segmentation using Pytorch.
 
