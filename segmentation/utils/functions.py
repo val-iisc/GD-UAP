@@ -6,6 +6,7 @@ import torch
 import numpy as np
 import cv2
 import math
+from PIL import Image
 
 def proj_lp(v, xi=10.0, p=np.inf):
 
@@ -43,6 +44,27 @@ def flip(I,flip_p):
 def blur(img_temp,blur_p):
     if blur_p>0.5:
         return cv2.GaussianBlur(img_temp,(3,3),1)
+    else:
+        return img_temp
+
+def crop_preprocess(img_temp,dim,net_name):
+    h =img_temp.shape[0]
+    w = img_temp.shape[1]
+    trig_h=trig_w=False
+    if(h>dim):
+        h_p = int(random.uniform(0,1)*(h-dim))
+        img_temp = img_temp[h_p:h_p+dim,:,:]
+    elif(h<dim):
+        trig_h = True
+    if(w>dim):
+        w_p = int(random.uniform(0,1)*(w-dim))
+        img_temp = img_temp[:,w_p:w_p+dim,:]
+    elif(w<dim):
+        trig_w = True
+    if(trig_h or trig_w):
+        pad = np.zeros((dim,dim,3))
+        pad[:img_temp.shape[0],:img_temp.shape[1],:] = img_temp
+        return pad
     else:
         return img_temp
 
@@ -87,7 +109,7 @@ def rotate(img_temp,rot,rot_p):
     else:
         return img_temp
 
-def randomize(img_temp):
+def randomize(img_temp,dim=513):
     flip_p = random.uniform(0, 1)
     rot_p = random.choice([-10,-7,-5,3,0,3,5,7,10])
     scale_p = random.uniform(0, 1)
@@ -111,9 +133,13 @@ def img_loader(img_loc,net_name):
     if net_name in ['fcn_alexnet','fcn8s_vgg16']:
         img_temp = Image.open(img_loc)
         img_temp = np.array(img_temp, dtype=np.float32)
+        if len(img_temp.shape) == 2:
+            img_temp = np.dstack([img_temp,img_temp,img_temp])
         img_temp = np.copy(img_temp[:,:,::-1])
     elif net_name in ['dl_vgg16','dl_resnet_msc']:
         img_temp = cv2.imread(img_loc)
+        if len(img_temp.shape) == 2:
+            img_temp = np.dstack([img_temp,img_temp,img_temp])
     return img_temp
 
 def get_training_data(chunk,img_path,dim,net_name,randomize=True):

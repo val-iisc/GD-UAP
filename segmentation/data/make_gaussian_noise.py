@@ -13,6 +13,7 @@ def make_some_noise():
         im[:,:,i] = np.random.normal(loc=mean[i],scale=sd[i],size= (1026,1026))
     im = np.clip(im,0,255)
     cv2.imwrite('gaussian_noise.png',im)
+    print('Range Prior Gaussian Noise is ready!')
 
 if __name__=='__main__':
     make_some_noise()
