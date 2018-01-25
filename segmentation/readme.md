@@ -90,7 +90,4 @@ Without the following works, this work would not have been possible. We whole-he
 
 * Evaluation Scripts: [seg_metrics_pytorch](https://github.com/BardOfCodes/seg_metrics_pytorch).
 
-## Notice
-
-The code has been refactored from an earlier version and it still has to be thoroughly tested. This will be done soon.
 
