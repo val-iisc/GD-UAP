@@ -51,15 +51,15 @@ Evaluating the performance of a perturbation on the KITTI Eigen split test datas
 python get_outputs.py --network dl_vgg16 --adv_im perturbations/zero_perturbation.npy --im_list utils/pascal_test.txt --output_directory output/ --output_name normal
 
 # To save output of Perturbed Input
-python get_outputs.py --network dl_vgg16 --adv_im perturbations/dl_vgg_with_data.npy --img_list utils/pascal_test.txt --save_path output/ --gpu 0 
+python get_outputs.py --network dl_vgg16 --adv_im perturbations/monodepth_vgg_with_data.npy --im_list utils/pascal_test.txt --output_directory output/ --output_name perturbed
 ```
 
-This command will save the predicted disparity maps for normal and perturbed images at `output/normal_predictions/` and `output/perturbed_predictions/` respectively.
+This command will save the predicted disparity maps for normal and perturbed images as `output/disparities_normal.npy` and `output/disparities_perturbed.npy` respectively.
 
 To find the Fooling rate and other metrics from the output, we use modified version of scripts provided by [monodepth](https://github.com/mrharicot/monodepth). After the previous step, to find the various metrics of perturbed prediction w.r.t. normal prediction (which can then be used to find the fooling rate), use the `monodepth_files/eval_test.py` script as follows:
 
 ```
-T.B.A.
+python monodepth_files/evaluate_kitti.py --split eigen --predicted_disp_path output/disparities_perturbed.npy --gt_path <add-path-to-kitti> --garg_crop
 ```
  
 To find the various metrics of perturbed prediction w.r.t. ground truth, use the `monodepth_files/evaluate_kitty.py` script as follows:

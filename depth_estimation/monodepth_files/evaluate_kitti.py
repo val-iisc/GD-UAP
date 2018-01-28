@@ -1,5 +1,5 @@
 import numpy as np
-import cv, cv2
+import cv2
 import argparse
 from evaluation_utils import *
 
@@ -23,7 +23,6 @@ if __name__ == '__main__':
         
         gt_disparities = load_gt_disp_kitti(args.gt_path)
         print(type(gt_disparities))
-        print(gt_disparities.shape)
         gt_depths, pred_depths, pred_disparities_resized = convert_disps_to_depths_kitti(gt_disparities, pred_disparities)
 
     elif args.split == 'eigen':
