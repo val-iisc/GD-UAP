@@ -1,5 +1,7 @@
 
 from __future__ import absolute_import, division, print_function
+import sys
+sys.path.insert(0,'monodepth_files/')
 import os
 import numpy as np
 import argparse
@@ -25,7 +27,7 @@ def count_text_lines(file_path):
     f.close()
     return len(lines)
 
-def test(params,adv_image):
+def test(params,adv_image,checkpoint_path,filenames_file,output_directory,output_name,data_path):
     """Test function."""
     # The input and the perturbation
 
@@ -50,21 +52,17 @@ def test(params,adv_image):
     threads = tf.train.start_queue_runners(sess=sess, coord=coordinator)
 
     # RESTORE
-    if args.checkpoint_path == '':
-        restore_path = tf.train.latest_checkpoint(ckpt_file)
-    else:
-        restore_path = args.checkpoint_path.split(".")[0]
-    train_saver.restore(sess, restore_path)
+    train_saver.restore(sess, checkpoint_path)
 
-    num_test_samples = count_text_lines(args.filenames_file)
+    num_test_samples = count_text_lines(filenames_file)
 
     print('now testing {} files'.format(num_test_samples))
     disparities    = np.zeros((num_test_samples, params.height, params.width), dtype=np.float32)
     disparities_pp = np.zeros((num_test_samples, params.height, params.width), dtype=np.float32)
-    images = open(args.filenames_file).readlines()
+    images = open(filenames_file).readlines()
     input_np = np.zeros((1,256,512,3))
     for step in range(num_test_samples):
-        im_path = args.data_path +images[step].split(' ')[0].strip()
+        im_path = data_path +images[step].split(' ')[0].strip()
         image = imread(im_path)
         image=resize(image,[256,512],mode='constant',preserve_range=True)/256.0
         input_np[0] = np.copy(image)
@@ -76,25 +74,26 @@ def test(params,adv_image):
     print('done.')
 
     print('writing disparities.')
-    output_directory = args.output_directory
-    np.save(output_directory + '/disparities.npy',    disparities)
+    np.save(output_directory + '/disparities_'+output_name+'.npy',    disparities)
 
     print('done.')
 
 def main():
 
 
-    parser = argparse.ArgumentParser(description='Monodepth TensorFlow implementation.')
+    parser = argparse.ArgumentParser(description='GD-UAP for Depth Estimation')
 
     parser.add_argument('--encoder',                   type=str,   help='type of encoder, vgg or resnet50', default='vgg')
     parser.add_argument('--data_path',                 type=str,   help='path to the data', required=True)
-    parser.add_argument('--filenames_file',            type=str,   help='path to the filenames text file', required=True)
+    parser.add_argument('--im_list',            type=str,   help='path to the filenames text file', default=
+    'monodepth_files/filenames/eigen_test_files.txt')
     parser.add_argument('--input_height',              type=int,   help='input height', default=256)
     parser.add_argument('--input_width',               type=int,   help='input width', default=512)
     parser.add_argument('--batch_size',                type=int,   help='batch size', default=8)
-    parser.add_argument('--output_directory',          type=str,   help='output directory for test disparities, if empty outputs to checkpoint folder', default='output/')
-    parser.add_argument('--checkpoint_path',           type=str,   help='path to a specific checkpoint to load', default='')
-    parser.add_argument('--perturbation',           type=str,   help='path to a specific checkpoint to load', default='')
+    parser.add_argument('--output_directory',          type=str,   help='output directory for test disparities', default='output/')
+    parser.add_argument('--output_name',          type=str,   help='output name for test disparities', default='')
+    parser.add_argument('--checkpoint_path',           type=str,   help='path to a specific checkpoint to load',default='weights/model_eigen')
+    parser.add_argument('--adv_im',           type=str,   help='path to a specific checkpoint to load', default='')
 
     args = parser.parse_args()
     params = monodepth_parameters(
@@ -102,9 +101,8 @@ def main():
         height=args.input_height,
         width=args.input_width,
         batch_size=args.batch_size)
-    adv_image = args.perturbation
 
-    test(params,adv_image)
+    test(params,args.adv_im,args.checkpoint_path,args.im_list,args.output_directory,args.output_name,args.data_path)
 
 if __name__ == '__main__':
     main()

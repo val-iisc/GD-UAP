@@ -48,7 +48,8 @@ Evaluating the performance of a perturbation on the KITTI Eigen split test datas
 
 ```
 # To save output of normal Input
-python get_outputs.py --network dl_vgg16 --adv_im perturbations/dl_vgg_with_data.npy --img_list utils/pascal_test.txt --save_path output/ --gpu 0 
+python get_outputs.py --network dl_vgg16 --adv_im perturbations/zero_perturbation.npy --im_list utils/pascal_test.txt --output_directory output/ --output_name normal
+
 # To save output of Perturbed Input
 python get_outputs.py --network dl_vgg16 --adv_im perturbations/dl_vgg_with_data.npy --img_list utils/pascal_test.txt --save_path output/ --gpu 0 
 ```

@@ -5,15 +5,13 @@ Preprocessed form of these images are saved for faster evaluation.
 import sys
 sys.path.insert(0,'../utils')
 from functions import *
-
 import numpy as np
 import argparse
 import os
-import random
 from skimage.transform import resize
 from scipy.misc import imread
 
-def save_preprocessed(net, save_loc, im_loc, im_list):
+def save_preprocessed(save_loc, im_loc, im_list):
     
     save_name = os.path.join(save_loc,'preprocessed.npy')
 
@@ -28,13 +26,13 @@ def save_preprocessed(net, save_loc, im_loc, im_list):
         preprocessed_im = np.zeros((1000,size[0],size[1],3))
         
         for i in range(1000):
-            im_path = op.path.join(im_loc,img_list[i].strip())
+            im_path = os.path.join(im_loc,img_list[i].strip())
             img_temp = imread(im_path)
-            if len(img.shape) ==2:
-                img = np.stack([img,]*3,2)
+            if len(img_temp.shape) ==2:
+                img_temp = np.stack([img_temp,]*3,2)
             img_temp = randomizer(img_temp)
             img_temp = resize(img_temp,[256,512],mode='constant',preserve_range=True)/256.0
-            preprocessed_im[i] = np.copy(im)
+            preprocessed_im[i] = np.copy(img_temp)
         np.save(save_name,preprocessed_im)
 
 def main():
