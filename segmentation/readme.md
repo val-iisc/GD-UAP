@@ -38,7 +38,7 @@ For training and evaluation, the following steps must be followed:
 To train a perturbation you can use the `train.py` script. For example to train/craft a perturbation for `Deeplab Large-FOV VGG 16`, with data priors, use the following command:
 
 ```
-python train.py --network dl_vgg16 --prior_type with_data --img_list utils/ilsvrc_train.txt --train_batch_size 10 --val_batch_size 15 --im_path /data1/data/pasvalVOC/pascalVOC2012/ --gpu 0
+python train.py --network dl_vgg16 --prior_type with_data --im_list utils/ilsvrc_train.txt --train_batch_size 10 --val_batch_size 15 --im_path /data1/data/pasvalVOC/pascalVOC2012/ --gpu 0
 ```
 
 This will run an optimization process proposed in the paper to craft a UAP for `Deeplab Large-FOV VGG 16` with data-priors. The resultant perturbation is saved in `perturbations/`.
@@ -49,7 +49,7 @@ This will run an optimization process proposed in the paper to craft a UAP for `
 Evaluating the performance of a perturbation on the PASCAL val dataset is a two step process. First, you can use the `get_outputs.py` script.This will save the predicted segmentation maps for normal and perturbed images as `.png` files. For example, to get the output of the perturbation `perturbations/dl_vgg_with_data.npy` on `Deeplab Large-FOV VGG 16` architecture, use the following command:
 
 ```
-python get_outputs.py --network dl_vgg16 --adv_im perturbations/dl_vgg_with_data.npy --img_list utils/pascal_test.txt --save_path output/ --gpu 0 
+python get_outputs.py --network dl_vgg16 --adv_im perturbations/dl_vgg_with_data.npy --im_list utils/pascal_test.txt --save_path output/ --gpu 0 
 ```
 
 This command will save the predicted segmentation maps for normal and perturbed images at `output/normal_predictions/` and `output/perturbed_predictions/` respectively.
