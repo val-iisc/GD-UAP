@@ -5,7 +5,7 @@
 
 Code for the paper [Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations](https://arxiv.org/abs/1801.08092)
 
-Mopuri Konda Reddy*,Aditya Ganeshan*, R. Venkatesh Babu
+Mopuri Konda Reddy* ,Aditya Ganeshan*, R. Venkatesh Babu
 
 ###### * = equal contribution 
 
@@ -48,10 +48,10 @@ Evaluating the performance of a perturbation on the KITTI Eigen split test datas
 
 ```
 # To save output of normal Input
-python get_outputs.py --network dl_vgg16 --adv_im perturbations/zero_perturbation.npy --im_list utils/pascal_test.txt --output_directory output/ --output_name normal
+python get_outputs.py --encoder vgg --data_path <add-path-to-kitti>  --adv_im perturbations/zero_perturbation.npy --im_list monodepth_files/filenames/eigen_test_files.txt --output_directory output/ --output_name normal
 
 # To save output of Perturbed Input
-python get_outputs.py --network dl_vgg16 --adv_im perturbations/monodepth_vgg_with_data.npy --im_list utils/pascal_test.txt --output_directory output/ --output_name perturbed
+python get_outputs.py --encoder vgg --data_path <add-path-to-kitti> --adv_im perturbations/monodepth_vgg_with_data.npy --im_list monodepth_files/filenames/eigen_test_files.txt  --output_directory output/ --output_name perturbed
 ```
 
 This command will save the predicted disparity maps for normal and perturbed images as `output/disparities_normal.npy` and `output/disparities_perturbed.npy` respectively.
@@ -66,7 +66,7 @@ To find the various metrics of perturbed prediction w.r.t. ground truth, use the
 
 
 ```
-T.B.A.
+python monodepth_files/eval_test.py --split eigen --predicted_disp_path output/disparities_perturbed.npy --prev_pred output/disparities_normal.npy --gt_path /data1/aditya/kitti_dataset/data/ --garg_crop 
 ```
  
 
@@ -76,14 +76,30 @@ These are some results taken from the paper:
 
 ### Quantitative Results
 
-T.B.A.
+**  Kindly read the paper to understand the results presented.**
 
+|Model     | Abs Rel | Sq Rel | RMSE | RMSE log | delta<1.25 | delta<1.25^2 |delta<1.25^3 |
+|------------|-----|-----|-----|-----|-----|-----|-----|
+|Normal Resnet50    | 0.133 | 1.148    |5.549 |0.230 |0.829 |0.935  |0.970 |
+|Baseline Resnet50   | 0.1339 | 1.1591    |5.576 |0.231 |0.827 |0.934 |0.969 |
+|Range prior Resnet50 | 0.319 | 3.292    |9.064 |**0.640** |**0.460** |**0.611** |**0.717**|
+|Data prior Resnet50 | **0.380** | **10.278**    |**10.976** |0.402 |0.708 |0.842 |0.900|
+|------------|-----|-----|-----|-----|-----|-----|-----|
+|Normal VGG    | 0.148 | 1.344   |5.927 |0.247 |0.803 |0.922  |0.964 |
+|Baseline VGG   | 0.149 | 1.353    |5.949 |0.248 |0.800 |0.920 |0.963 |
+|Range prior VGG | 0.212 | 2.073    |6.994 |**0.364** |**0.658** |**0.825** |**0.906**|
+|Data prior VGG | **0.355** | **9.612**    |**10.592** |0.390 |0.714 |0.850 |0.908|
+|------------|-----|-----|-----|-----|-----|-----|-----|
+|Train set mean | 0.361 | 4.826    |8.102 |0.377 |0.638 |0.804 |0.894|
 
 ## Acknowledgement
 
-T.B.A.
+Without the following works, this work would not have been possible. We whole-heartedly acknowledge the contribution from the following:
 
-## Notice
+* [Fast Feature Fool](https://github.com/val-iisc/fast-feature-fool), and Universal Adversarial Perturbations(https://github.com/LTS4/universal). 
 
-The code has been refactored from an earlier version and it still has to be thoroughly tested. This will be done soon.
+* [The KITTI Vision Benchmark Suite](http://www.cvlibs.net/datasets/kitti/) and [Places-205 Dataset](http://places.csail.mit.edu/).
+
+* [MonoDepth](https://github.com/mrharicot/monodepth).
+
 

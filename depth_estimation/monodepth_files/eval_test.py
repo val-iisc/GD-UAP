@@ -1,5 +1,4 @@
 import numpy as np
-import cv
 import cv2
 import argparse
 from evaluation_utils import *
