@@ -46,7 +46,7 @@ This will run an optimization process proposed in the paper to craft a UAP for `
 To evaluate the performance of a perturbation on the ILSVRC test dataset, you can use the `evaluate.py` script. For example, to test the fooling performance of the perturbation `perturbations/googlenet_with_range.npy` on `googlenet` architecture, use the following command:
 
 ```
-python evaluate.py --network googlenet --adv_im perturbations/googlenet_with_range.npy --img_list utils/ilsvrc_test.txt --gt_list ilsvrc_gt.txt --batch_size 20
+python evaluate.py --network googlenet --adv_im perturbations/googlenet_with_range.npy --img_list utils/ilsvrc_test.txt --gt_labels ilsvrc_gt.txt --batch_size 20
 ```
 This command will print the normal accuracy, perturbed accuracy and the fooling rate after each 100 iterations, and give the final results (on the whole test dataset) at the end.
 

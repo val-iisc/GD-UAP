@@ -45,25 +45,22 @@ def batch_norm(bottom, weight, relu=True):
 def inception_block(bottom, name, weights, biases):
     block = {}
     with tf.name_scope(name+'1x1'):
-        block['branch_1'] = conv_layer(bottom, weights['inception_'+name+'_1x1'], biases['inception_'+name+'_1x1'],relu=False)
+        block['branch_1'] = conv_layer(bottom, weights['inception_'+name+'_1x1'], biases['inception_'+name+'_1x1'])
 
     with tf.name_scope(name+'3x3'):
-        block['branch_2_1'] = conv_layer(bottom, weights['inception_'+name+'_3x3_reduce'],biases['inception_'+name+'_3x3_reduce'],relu=False)
-        block['branch_2_1relu'] = tf.nn.relu(block['branch_2_1'])
-        block['branch_2_2'] = conv_layer(block['branch_2_1relu'], weights['inception_'+name+'_3x3'],
-        biases['inception_'+name+'_3x3'],relu=False)
+        block['branch_2_r'] = conv_layer(bottom, weights['inception_'+name+'_3x3_reduce'], biases['inception_'+name+'_3x3_reduce'])
+        block['branch_2'] = conv_layer(block['branch_2_r'], weights['inception_'+name+'_3x3'], biases['inception_'+name+'_3x3'])
 
     with tf.name_scope(name+'5x5'):
-        block['branch_3_1'] = conv_layer(bottom, weights['inception_'+name+'_5x5_reduce'], biases['inception_'+name+'_5x5_reduce'],relu=False)
-        block['branch_3_1relu'] = tf.nn.relu(block['branch_3_1'])
-        block['branch_3_2'] = conv_layer(block['branch_3_1relu'], weights['inception_'+name+'_5x5'], biases['inception_'+name+'_5x5'],relu=False)
+        block['branch_3_r'] = conv_layer(bottom, weights['inception_'+name+'_5x5_reduce'], biases['inception_'+name+'_5x5_reduce'])
+        block['branch_3'] = conv_layer(block['branch_3_r'], weights['inception_'+name+'_5x5'], biases['inception_'+name+'_5x5'])
 
     with tf.name_scope(name+'pool'):
-        branch_4 = max_pool(bottom)
-        block['branch_4'] = conv_layer(branch_4, weights['inception_'+name+'_pool_proj'], biases['inception_'+name+'_pool_proj'],relu=False)
-    inception_out = tf.concat(axis=3, values=[block['branch_1'], block['branch_2_2'],
-    block['branch_3_2'], block['branch_4'] ])
-    block['inception_outputrelu'] = tf.nn.relu(inception_out)
+        block['branch_4_p'] = max_pool(bottom)
+        block['branch_4'] = conv_layer(block['branch_4_p'], weights['inception_'+name+'_pool_proj'], biases['inception_'+name+'_pool_proj'])
+
+    block['concat'] = tf.concat(axis=3, values=[block['branch_1'], block['branch_2'], block['branch_3'], block['branch_4']])
+
     return block
 
 def inception_a(bottom, name, weights, index):
