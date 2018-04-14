@@ -61,7 +61,7 @@ def inception_block(bottom, name, weights, biases):
 
     block['concat'] = tf.concat(axis=3, values=[block['branch_1'], block['branch_2'], block['branch_3'], block['branch_4']])
 
-    return block
+    return block['concat']
 
 def inception_a(bottom, name, weights, index):
     block = {}
