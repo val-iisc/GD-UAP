@@ -4,11 +4,12 @@ import torch.optim as optim
 from torch.autograd import Variable
 import torch.nn.functional as F
 
+
 class fcn8s_vgg16(nn.Module):
 
     def __init__(self):
         super(fcn8s_vgg16, self).__init__()
-        
+
         # conv1
         self.conv1_1 = nn.Conv2d(3, 64, 3, padding=100)
         self.relu1_1 = nn.ReLU()
@@ -71,51 +72,49 @@ class fcn8s_vgg16(nn.Module):
         self.upscore_pool4 = nn.ConvTranspose2d(
             21, 21, 4, stride=2, bias=False)
 
-
-        
     def forward(self, x):
         h = x
         h = self.relu1_1(self.conv1_1(h))
         h = self.relu1_2(self.conv1_2(h))
         h = self.pool1(h)
-        #print(h.size())
+        # print(h.size())
         h = self.relu2_1(self.conv2_1(h))
         h = self.relu2_2(self.conv2_2(h))
         h = self.pool2(h)
-        #print(h.size())
+        # print(h.size())
 
         h = self.relu3_1(self.conv3_1(h))
         h = self.relu3_2(self.conv3_2(h))
         h = self.relu3_3(self.conv3_3(h))
         h = self.pool3(h)
-        #print(h.size())
+        # print(h.size())
         pool3 = h  # 1/8
 
         h = self.relu4_1(self.conv4_1(h))
         h = self.relu4_2(self.conv4_2(h))
         h = self.relu4_3(self.conv4_3(h))
         h = self.pool4(h)
-        #print(h.size())
+        # print(h.size())
         pool4 = h  # 1/16
 
         h = self.relu5_1(self.conv5_1(h))
         h = self.relu5_2(self.conv5_2(h))
         h = self.relu5_3(self.conv5_3(h))
         h = self.pool5(h)
-        #print(h.size())
+        # print(h.size())
 
         h = self.reelu6(self.fc6(h))
         h = self.drop6(h)
-        #print(h.size())
+        # print(h.size())
 
         h = self.reelu7(self.fc7(h))
         h = self.drop7(h)
-        #print(h.size())
+        # print(h.size())
 
         h = self.score_fr(h)
-        #print(h.size())
+        # print(h.size())
         h = self.upscore2(h)
-        #print('upscore',h.size())
+        # print('upscore',h.size())
         upscore2 = h  # 1/16
 
         h = self.score_pool4(pool4)

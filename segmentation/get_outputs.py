@@ -11,25 +11,27 @@ import time
 import skimage.io as sio
 import argparse
 
+
 def validate_arguments(args):
-    nets = ['fcn_alexnet','fcn8s_vgg16', 'dl_resnet_msc', 'dl_vgg16']
+    nets = ['fcn_alexnet', 'fcn8s_vgg16', 'dl_resnet_msc', 'dl_vgg16']
 
     if not(args.network in nets):
         print ('invalid network')
-        exit (-1)
+        exit(-1)
     if args.adv_im is None:
         print ('no path to perturbation')
-        exit (-1)
+        exit(-1)
     if args.im_list is None or args.im_path is None:
         print ('provide image list and labels')
-        exit (-1)
+        exit(-1)
+
 
 def choose_net(network):
     MAP = {
-            'fcn_alexnet' : [fcn_alexnet,'weights/fcn_alexnet.pth'],
-            'fcn8s_vgg16' : [fcn8s_vgg16,'weights/fcn8s_vgg16.pth'],
-            'dl_vgg16'     : [deeplab_vgg_lfov,'weights/VOC12_deeplab_1_6000.pth'],
-            'dl_resnet_msc' : [Res_Deeplab,'weights/MS_DeepLab_resnet_trained_VOC.pth']
+        'fcn_alexnet': [fcn_alexnet, 'weights/fcn_alexnet.pth'],
+        'fcn8s_vgg16': [fcn8s_vgg16, 'weights/fcn8s_vgg16.pth'],
+        'dl_vgg16': [deeplab_vgg_lfov, 'weights/VOC12_deeplab_1_6000.pth'],
+        'dl_resnet_msc': [Res_Deeplab, 'weights/MS_DeepLab_resnet_trained_VOC.pth']
     }
     size = 513
     net = MAP[network][0]()
@@ -39,59 +41,71 @@ def choose_net(network):
     # net.float()
     net.eval()
     net.cuda()
-    return net,size
+    return net, size
 
-def evaluate(model,size,net_name,im_path,im_list,save_path,adv_im):
+
+def evaluate(model, size, net_name, im_path, im_list, save_path, adv_im):
     start_time = time.time()
     batch_size = 1
 
-    ## Load perturbation
+    # Load perturbation
     v = torch.autograd.Variable(torch.FloatTensor(np.load(adv_im))).cuda()
 
     for param in model.parameters():
         param.requires_grad = False
         param.volatile = True
-    
+
     file_list = open(im_list).readlines()
     file_list = [f.strip() for f in file_list]
     max_iter = len(file_list)
     for iter, chunk in enumerate(chunker(file_list, batch_size)):
         image = cv2.imread(im_path+file_list[iter]+'.jpg')
-        image = image[:,:,0]
+        image = image[:, :, 0]
         # image[image ==255] = 0
         height = image.shape[0]
         width = image.shape[1]
-        if net_name in ['dl_resnet_msc','dl_vgg16']:
-            images = get_testing_data(chunk,im_path,net_name)
+        if net_name in ['dl_resnet_msc', 'dl_vgg16']:
+            images = get_testing_data(chunk, im_path, net_name)
         else:
-            images = get_testing_data(chunk,im_path,net_name,[height,width])
+            images = get_testing_data(
+                chunk, im_path, net_name, [height, width])
         normal_out = model(images)
         normal_out = normal_out.cpu().data.numpy()[0]
-        normal_out = np.argmax(normal_out,0)[:height,:width]
-        if net_name in ['dl_resnet_msc','dl_vgg16']:
+        normal_out = np.argmax(normal_out, 0)[:height, :width]
+        if net_name in ['dl_resnet_msc', 'dl_vgg16']:
             pert_out = model(images+v)
         else:
-            pert_out = model(images+v[:,:,:height,:width])
+            pert_out = model(images+v[:, :, :height, :width])
         pert_out = pert_out.cpu().data.numpy()[0]
-        pert_out = np.argmax(pert_out,0)[:height,:width]
-        sio.imsave(os.path.join(args.save_path,'normal_prediction/',file_list[iter]+'.png'),normal_out)
-        sio.imsave(os.path.join(args.save_path,'perturbed_prediction/',file_list[iter]+'.png'),pert_out)
-        if(iter%50 == 0):
-            print('Current Iteration ',iter,' of max_iter ',max_iter)
-    print('Saved all images in ',time.time() - start_time, ' seconds.')
+        pert_out = np.argmax(pert_out, 0)[:height, :width]
+        sio.imsave(os.path.join(args.save_path, 'normal_prediction/',
+                                file_list[iter]+'.png'), normal_out)
+        sio.imsave(os.path.join(args.save_path,
+                                'perturbed_prediction/', file_list[iter]+'.png'), pert_out)
+        if(iter % 50 == 0):
+            print('Current Iteration ', iter, ' of max_iter ', max_iter)
+    print('Saved all images in ', time.time() - start_time, ' seconds.')
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--network', default='dl_vgg16', help='The network eg. dl_vgg16.')
-    parser.add_argument('--im_path',help='The location of the validation images.')
-    parser.add_argument('--im_list', default='utils/pascal_test.txt', help='The file with list of Pascal VOC file IDs.')
-    parser.add_argument('--save_path', default='output/', help='The output segmentation predictions of the normal and perturbed images will be stored here.')
+    parser.add_argument('--network', default='dl_vgg16',
+                        help='The network eg. dl_vgg16.')
+    parser.add_argument(
+        '--im_path', help='The location of the validation images.')
+    parser.add_argument('--im_list', default='utils/pascal_test.txt',
+                        help='The file with list of Pascal VOC file IDs.')
+    parser.add_argument('--save_path', default='output/',
+                        help='The output segmentation predictions of the normal and perturbed images will be stored here.')
     parser.add_argument('--gpu', default='0', help='The ID of GPU to use.')
-    parser.add_argument('--adv_im', default='perturbations/dl_vgg16_with_all_data.npy', help='The UAP generated by GD-UAP to test on the given network.')
-    
+    parser.add_argument('--adv_im', default='perturbations/dl_vgg16_with_all_data.npy',
+                        help='The UAP generated by GD-UAP to test on the given network.')
+
     args = parser.parse_args()
     validate_arguments(args)
     im_path = args.im_path
     torch.cuda.set_device(int(args.gpu))
 
-    model,size  = choose_net(args.network)
-    evaluate(model,size,args.network,args.im_path,args.im_list,args.save_path,args.adv_im)
+    model, size = choose_net(args.network)
+    evaluate(model, size, args.network, args.im_path,
+             args.im_list, args.save_path, args.adv_im)
