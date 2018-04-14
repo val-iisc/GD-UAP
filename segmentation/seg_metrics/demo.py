@@ -29,37 +29,37 @@ if __name__ == '__main__':
     start_time = time.time()
     if(args['find_metrics']):
         ###########
-        pascal_voc_util =  pickle.load( open( "pascal_voc_util.pkl", "rb" ) )
+        pascal_voc_util = pickle.load(open("pascal_voc_util.pkl", "rb"))
         class_dict = pascal_voc_util[1]
         class_names = [class_dict[i] for i in class_dict.keys()][:-1]
         ###########
         file_ids = get_file_ids(args['<id_file>'])
         st = time.time()
         print('Making Histogram')
-        hist = hist_maker(args['<predict_path>'],args['<gt_path>'],file_ids,
-                          int(args['--batch_size']),int(args['--ignore_label']),int(args['--classes']),bool(args['--gpu']))
+        hist = hist_maker(args['<predict_path>'], args['<gt_path>'], file_ids,
+                          int(args['--batch_size']), int(args['--ignore_label']), int(args['--classes']), bool(args['--gpu']))
         print('Histogram Made!')
         print(time.time()-st)
-        mean_acc = mean_pixel_accuracy(hist.numpy(),class_names)
+        mean_acc = mean_pixel_accuracy(hist.numpy(), class_names)
         overall_acc = pixel_accuracy(hist.numpy())
-        mean_ious = mean_iou(hist.numpy(),class_names)
+        mean_ious = mean_iou(hist.numpy(), class_names)
         fmiou = freq_weighted_miou(hist.numpy(), class_names)
-        print('Total time taken: ',time.time()-start_time)
-        
+        print('Total time taken: ', time.time()-start_time)
+
     if(args['convert_prediction']):
         ########
-        pascal_voc_util =  pickle.load( open( "pascal_voc_util.pkl", "rb" ) )
+        pascal_voc_util = pickle.load(open("pascal_voc_util.pkl", "rb"))
         color_map = pascal_voc_util[0]
         ########
         file_ids = get_file_ids(args['<id_file>'])
-        mat_to_png(args['<predict_path>'],file_ids,color_map)
-        print('Total time taken: ',time.time()-start_time)
-        
+        mat_to_png(args['<predict_path>'], file_ids, color_map)
+        print('Total time taken: ', time.time()-start_time)
+
     if(args['convert_gt']):
         ########
-        pascal_voc_util =  pickle.load( open( "pascal_voc_util.pkl", "rb" ) )
+        pascal_voc_util = pickle.load(open("pascal_voc_util.pkl", "rb"))
         color_map = pascal_voc_util[0]
         ########
         file_ids = get_file_ids(args['<id_file>'])
-        img_dim_reductor(args['<gt_path>'],file_ids,color_map)
-        print('Total time taken: ',time.time()-start_time)
+        img_dim_reductor(args['<gt_path>'], file_ids, color_map)
+        print('Total time taken: ', time.time()-start_time)
