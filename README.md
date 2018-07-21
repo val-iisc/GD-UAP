@@ -1,5 +1,7 @@
 # GD-UAP
 
+<center><img src="gd_uap_overview.png" alt="Overview Image"><\center>
+  
 Code for the paper [Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations](https://arxiv.org/abs/1801.08092)
 
 Accepted in **IEEE Transactions on Pattern Analysis and Machine Intelligence**!
