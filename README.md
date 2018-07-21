@@ -2,6 +2,8 @@
 
 Code for the paper [Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations](https://arxiv.org/abs/1801.08092)
 
+Accepted in **IEEE Transactions on Pattern Analysis and Machine Intelligence**!
+
 Mopuri Konda Reddy*,Aditya Ganeshan*, R. Venkatesh Babu
 
 ###### * = equal contribution 
