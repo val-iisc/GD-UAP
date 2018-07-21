@@ -1,6 +1,6 @@
 # GD-UAP
 
-<center><img src="GD-UAP-overview-latest-variation.png" alt="Overview Image"><\center>
+<center> <img src="GD-UAP-overview-latest-variation.png" alt="Overview Image"> </center>
   
 Code for the paper [Generalizable Data-free Objective for Crafting Universal Adversarial Perturbations](https://arxiv.org/abs/1801.08092)
 
